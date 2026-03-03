@@ -257,7 +257,7 @@ const translations = {
     manifL4: '"Onde está o seu potencial máximo?"',
     arch1Tag: 'Arquivo',
     arch1Title: 'Desenhamos a maquinaria de Vendas.',
-    arch1Sub: 'Pessoas que operam com precisão.',
+    arch1Sub: 'Pessoas que operam con precisão.',
     arch2Title: 'Fluxo Contínuo',
     arch2Sub: 'Resultados que palpitentam, estratégias que respiram.',
     contactTitle1: 'Inicie sua',
@@ -276,7 +276,7 @@ const translations = {
     footerPrivacy: 'Privacidade',
     footerTerms: 'Termos',
     footerRights: 'Todos os derechos reservados.',
-    footerSys: 'Sistema Operacional | Activo'
+    footerSys: 'Sistema Operacional | Ativo'
   },
   it: {
     navSystem: 'Metodologia',
@@ -341,7 +341,7 @@ const translations = {
     footerPrivacy: 'Privacy',
     footerTerms: 'Termini',
     footerRights: 'Tutti i diritti riservati.',
-    footerSys: 'Sistema Operativo | Attivo'
+    footerSys: 'Sistema Operativo | Activo'
   }
 }
 
@@ -1110,7 +1110,9 @@ const ContactAndFooter = () => {
     const body = encodeURIComponent(
       `Nombre: ${formData.name}\nEmpresa: ${formData.company}\nEmail: ${formData.email}\nTeléfono: ${formData.phone}\n\nMensaje:\n(Escribe aquí tu consulta...)`
     )
-    window.location.href = `mailto:${emailTo}?subject=${subject}&body=${body}`
+
+    // CAMBIO: Ahora utilizamos window.open con '_blank' para abrir el cliente de correo sin cerrar la pestaña actual
+    window.open(`mailto:${emailTo}?subject=${subject}&body=${body}`, '_blank')
   }
 
   return (
