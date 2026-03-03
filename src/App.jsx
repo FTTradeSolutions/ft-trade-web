@@ -1276,7 +1276,6 @@ export default function App() {
   const [lang, setLang] = useState('es')
 
   useEffect(() => {
-    document.title = 'Fernando Tobía T&S'
     const loadScript = (src) =>
       new Promise((resolve) => {
         const script = document.createElement('script')
@@ -1298,13 +1297,33 @@ export default function App() {
     })
   }, [])
 
+  const t = translations[lang]
+
+  // --- NUEVO: Motor de SEO Dinámico ---
+  useEffect(() => {
+    // 1. Actualiza el título de la pestaña con la marca y el apartado principal traducido
+    document.title = `Fernando Tobía T&S | ${t.heroSubtitle}`
+
+    // 2. Cambia el idioma del documento HTML (Crucial para Google y Accesibilidad)
+    document.documentElement.lang = lang
+
+    // 3. Inyecta o actualiza la Meta Descripción dinámica para los resultados de búsqueda
+    let metaDesc = document.querySelector('meta[name="description"]')
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta')
+      metaDesc.name = 'description'
+      document.head.appendChild(metaDesc)
+    }
+    metaDesc.content = t.featDesc // Usamos el texto descriptivo: "Reemplazamos la intuición por Datos..."
+  }, [lang, t])
+
   if (!gsapLoaded)
     return (
       <div className='min-h-screen bg-[#1A1A1A] flex items-center justify-center font-sans-title text-[#F2F0E9] text-sm tracking-[0.2em] uppercase'>
         Inicializando Sistema...
       </div>
     )
-  const t = translations[lang]
+
   return (
     <LanguageContext.Provider value={{ lang, setLang, t }}>
       <div className='relative min-h-screen bg-[#F2F0E9] text-[#1A1A1A] selection:bg-[#2E4036] selection:text-white smooth-scroll'>
