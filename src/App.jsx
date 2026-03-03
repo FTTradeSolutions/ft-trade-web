@@ -151,7 +151,7 @@ const translations = {
   },
   fr: {
     navSystem: 'Méthodologie',
-    navManifesto: 'Philosophy',
+    navManifesto: 'Philosophie',
     navArchive: 'Impact',
     navCTA: 'En savoir plus ?',
     heroSubtitle: 'Fernando Tobía Trade & Solutions',
@@ -272,7 +272,7 @@ const translations = {
     formEmailP: 'contato@empresa.com',
     formPhoneL: 'Telefone (com código)',
     formPhoneP: 'Ex. +351 900 000 000',
-    formCTA: 'Solicitar Contacto',
+    formCTA: 'Solicitar Contato',
     footerPrivacy: 'Privacidade',
     footerTerms: 'Termos',
     footerRights: 'Todos os derechos reservados.',
@@ -341,7 +341,7 @@ const translations = {
     footerPrivacy: 'Privacy',
     footerTerms: 'Termini',
     footerRights: 'Tutti i diritti riservati.',
-    footerSys: 'Sistema Operativo | Activo'
+    footerSys: 'Sistema Operativo | Attivo'
   }
 }
 
@@ -516,23 +516,23 @@ const Navbar = () => {
             {t.navManifesto}
           </a>
           <a
-            href='#archive'
-            onClick={(e) => handleScrollTo(e, 'archive')}
+            href='#flujo-continuo'
+            onClick={(e) => handleScrollTo(e, 'flujo-continuo')}
             className='hover:text-[#CC5833] transition-colors cursor-pointer'
           >
             {t.navArchive}
           </a>
         </div>
 
-        <div className='flex items-center gap-6'>
+        <div className='flex items-center gap-4 md:gap-6'>
           <MagneticButton
             onClick={(e) => handleScrollTo(e, 'contact')}
-            className={`px-5 py-2 rounded-full text-sm font-semibold transition-colors ${scrolled ? 'bg-[#2E4036] text-white' : 'bg-white text-[#1A1A1A]'}`}
+            className={`px-3 py-1.5 md:px-5 md:py-2 rounded-full text-xs md:text-sm font-semibold transition-colors ${scrolled ? 'bg-[#2E4036] text-white' : 'bg-white text-[#1A1A1A]'}`}
           >
             {t.navCTA}
           </MagneticButton>
 
-          <div className='flex items-center gap-3 font-mono-data text-xs uppercase tracking-widest border-l border-current/20 pl-6'>
+          <div className='flex items-center gap-2 md:gap-3 font-mono-data text-[10px] md:text-xs uppercase tracking-widest border-l border-current/20 pl-4 md:pl-6'>
             {['es', 'en', 'fr', 'pt', 'it'].map((l) => (
               <button
                 key={l}
@@ -641,12 +641,12 @@ const Hero = () => {
               {t.heroTitle2}
             </span>
           </h1>
-          <div className='hero-text mt-8 md:mt-12 flex flex-col md:flex-row gap-6 md:items-center'>
+          <div className='hero-text mt-8 md:mt-12 flex flex-col md:flex-row gap-4 md:gap-6 md:items-center'>
             <MagneticButton
               onClick={handleScrollToContact}
-              className='bg-[#CC5833] text-white px-8 py-4 rounded-full font-sans-body font-semibold flex items-center w-max'
+              className='bg-[#CC5833] text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-sans-body font-semibold text-sm md:text-base flex items-center w-max'
             >
-              {t.heroCTA} <ArrowRight className='w-5 h-5 ml-2' />
+              {t.heroCTA} <ArrowRight className='w-4 h-4 md:w-5 md:h-5 ml-2' />
             </MagneticButton>
             <p className='font-sans-body text-white/60 text-sm md:text-base max-w-sm'>
               {t.heroDesc}
@@ -971,6 +971,7 @@ const Manifesto = () => {
 }
 
 const ArchivePanel = ({
+  id,
   title,
   subtitle,
   bgColor,
@@ -980,6 +981,7 @@ const ArchivePanel = ({
   children
 }) => (
   <div
+    id={id}
     className={`sticky top-0 h-screen w-full ${bgColor} flex flex-col justify-center px-6 md:px-16 overflow-hidden rounded-t-[2rem] md:rounded-t-[3rem] archive-panel shadow-[0_-20px_50px_rgba(0,0,0,0.2)]`}
   >
     {bgImage && (
@@ -1062,6 +1064,7 @@ const Archive = () => {
         </div>
       </ArchivePanel>
       <ArchivePanel
+        id='flujo-continuo'
         title={t.arch2Title}
         subtitle={t.arch2Sub}
         bgColor='bg-[#1A1A1A]'
@@ -1110,8 +1113,6 @@ const ContactAndFooter = () => {
     const body = encodeURIComponent(
       `Nombre: ${formData.name}\nEmpresa: ${formData.company}\nEmail: ${formData.email}\nTeléfono: ${formData.phone}\n\nMensaje:\n(Escribe aquí tu consulta...)`
     )
-
-    // CAMBIO: Ahora utilizamos window.open con '_blank' para abrir el cliente de correo sin cerrar la pestaña actual
     window.open(`mailto:${emailTo}?subject=${subject}&body=${body}`, '_blank')
   }
 
@@ -1275,9 +1276,7 @@ export default function App() {
   const [lang, setLang] = useState('es')
 
   useEffect(() => {
-    // CAMBIO DE TÍTULO DE LA PESTAÑA
     document.title = 'Fernando Tobía T&S'
-
     const loadScript = (src) =>
       new Promise((resolve) => {
         const script = document.createElement('script')
