@@ -77,6 +77,8 @@ const translations = {
     formCompP: 'Nombre de tu corporación',
     formEmailL: 'Email corporativo',
     formEmailP: 'contacto@empresa.com',
+    formPhoneL: 'Teléfono (con prefijo)',
+    formPhoneP: 'Ej. +34 600 000 000',
     formCTA: 'Solicitar Contacto',
     footerPrivacy: 'Privacidad',
     footerTerms: 'Términos',
@@ -139,6 +141,8 @@ const translations = {
     formCompP: 'Your corporation name',
     formEmailL: 'Corporate Email',
     formEmailP: 'contact@company.com',
+    formPhoneL: 'Phone (with code)',
+    formPhoneP: 'E.g. +1 555 000 0000',
     formCTA: 'Request Contact',
     footerPrivacy: 'Privacy',
     footerTerms: 'Terms',
@@ -147,7 +151,7 @@ const translations = {
   },
   fr: {
     navSystem: 'Méthodologie',
-    navManifesto: 'Philosophie',
+    navManifesto: 'Philosophy',
     navArchive: 'Impact',
     navCTA: 'En savoir plus ?',
     heroSubtitle: 'Fernando Tobía Trade & Solutions',
@@ -202,6 +206,8 @@ const translations = {
     formCompP: 'Nom de votre entreprise',
     formEmailL: 'Email professionnel',
     formEmailP: 'contact@entreprise.com',
+    formPhoneL: 'Téléphone (indicatif)',
+    formPhoneP: 'Ex. +33 6 00 00 00 00',
     formCTA: 'Demander Contact',
     footerPrivacy: 'Confidentialité',
     footerTerms: 'Conditions',
@@ -264,6 +270,8 @@ const translations = {
     formCompP: 'Nome da sua corporação',
     formEmailL: 'E-mail corporativo',
     formEmailP: 'contato@empresa.com',
+    formPhoneL: 'Telefone (com código)',
+    formPhoneP: 'Ex. +351 900 000 000',
     formCTA: 'Solicitar Contato',
     footerPrivacy: 'Privacidade',
     footerTerms: 'Termos',
@@ -327,6 +335,8 @@ const translations = {
     formCompP: 'Nome della tua azienda',
     formEmailL: 'Email aziendale',
     formEmailP: 'contatto@azienda.com',
+    formPhoneL: 'Telefono (con prefisso)',
+    formPhoneP: 'Es. +39 300 000 0000',
     formCTA: 'Richiedi Contatto',
     footerPrivacy: 'Privacy',
     footerTerms: 'Termini',
@@ -428,7 +438,7 @@ const Logo = ({ className = 'w-12 h-12' }) => {
   if (error) {
     return (
       <div
-        className={`${className} bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center drop-shadow-md`}
+        className={`${className} bg-white/10 backdrop-blur-md flex items-center justify-center drop-shadow-md`}
       >
         <Hexagon
           className='text-[#CC5833] w-3/4 h-3/4 fill-[#CC5833]/20'
@@ -440,9 +450,9 @@ const Logo = ({ className = 'w-12 h-12' }) => {
 
   return (
     <img
-      src='logo.png'
+      src='/logo.png'
       alt='Fernando Tobía Logo'
-      className={`${className} object-contain rounded-full shadow-md`}
+      className={`${className} object-contain`}
       onError={() => setError(true)}
     />
   )
@@ -502,6 +512,11 @@ const Navbar = () => {
 
         <div className='flex items-center gap-6'>
           <MagneticButton
+            onClick={() =>
+              document
+                .getElementById('contact')
+                .scrollIntoView({ behavior: 'smooth' })
+            }
             className={`px-5 py-2 rounded-full text-sm font-semibold transition-colors ${scrolled ? 'bg-[#2E4036] text-white' : 'bg-white text-[#1A1A1A]'}`}
           >
             {t.navCTA}
@@ -574,7 +589,14 @@ const Hero = () => {
             </span>
           </h1>
           <div className='hero-text mt-8 md:mt-12 flex flex-col md:flex-row gap-6 md:items-center'>
-            <MagneticButton className='bg-[#CC5833] text-white px-8 py-4 rounded-full font-sans-body font-semibold flex items-center w-max'>
+            <MagneticButton
+              onClick={() =>
+                document
+                  .getElementById('contact')
+                  .scrollIntoView({ behavior: 'smooth' })
+              }
+              className='bg-[#CC5833] text-white px-8 py-4 rounded-full font-sans-body font-semibold flex items-center w-max'
+            >
               {t.heroCTA} <ArrowRight className='w-5 h-5 ml-2' />
             </MagneticButton>
             <p className='font-sans-body text-white/60 text-sm md:text-base max-w-sm'>
@@ -1068,14 +1090,35 @@ const Archive = () => {
 
 const ContactAndFooter = () => {
   const { t } = useContext(LanguageContext)
+  const [formData, setFormData] = useState({
+    name: '',
+    company: '',
+    email: '',
+    phone: ''
+  })
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const emailTo = 'ftobia@fttradesolutions.com'
+    const subject = encodeURIComponent(
+      `Nuevo contacto web: ${formData.name} - ${formData.company}`
+    )
+    const body = encodeURIComponent(
+      `Nombre: ${formData.name}\nEmpresa: ${formData.company}\nEmail: ${formData.email}\nTeléfono: ${formData.phone}\n\nMensaje:\n(Escribe aquí tu consulta...)`
+    )
+    window.location.href = `mailto:${emailTo}?subject=${subject}&body=${body}`
+  }
 
   return (
     <div className='relative z-50 bg-[#1A1A1A] rounded-t-[2rem] md:rounded-t-[3rem] overflow-hidden'>
-      {/* SEÇÃO CONTATO */}
-      <section className='bg-[#2E4036] py-24 md:py-32 px-6 rounded-t-[2rem] md:rounded-t-[3rem]'>
+      {/* SECCIÓN CONTACTO */}
+      <section
+        id='contact'
+        className='bg-[#2E4036] py-24 md:py-32 px-6 rounded-t-[2rem] md:rounded-t-[3rem]'
+      >
         <div className='max-w-4xl mx-auto flex flex-col md:flex-row gap-16 items-center'>
           <div className='w-full md:w-1/2 text-white'>
-            <Logo className='w-24 h-24 mb-8 border-2 border-white/20' />
+            <Logo className='w-32 h-32 md:w-48 md:h-48 mb-8' />
             <h2 className='font-sans-title font-bold text-4xl md:text-6xl mb-6'>
               {t.contactTitle1}
               <br />
@@ -1091,16 +1134,18 @@ const ContactAndFooter = () => {
           </div>
 
           <div className='w-full md:w-1/2 bg-white rounded-3xl p-8 shadow-2xl'>
-            <form
-              className='flex flex-col gap-6'
-              onSubmit={(e) => e.preventDefault()}
-            >
+            <form className='flex flex-col gap-6' onSubmit={handleSubmit}>
               <div>
                 <label className='block font-sans-body text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2'>
                   {t.formNameL}
                 </label>
                 <input
                   type='text'
+                  required
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   className='w-full border-b border-gray-300 py-2 focus:outline-none focus:border-[#2E4036] transition-colors font-sans-body text-gray-800 bg-transparent'
                   placeholder={t.formNameP}
                 />
@@ -1111,6 +1156,11 @@ const ContactAndFooter = () => {
                 </label>
                 <input
                   type='text'
+                  required
+                  value={formData.company}
+                  onChange={(e) =>
+                    setFormData({ ...formData, company: e.target.value })
+                  }
                   className='w-full border-b border-gray-300 py-2 focus:outline-none focus:border-[#2E4036] transition-colors font-sans-body text-gray-800 bg-transparent'
                   placeholder={t.formCompP}
                 />
@@ -1121,11 +1171,36 @@ const ContactAndFooter = () => {
                 </label>
                 <input
                   type='email'
+                  required
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   className='w-full border-b border-gray-300 py-2 focus:outline-none focus:border-[#2E4036] transition-colors font-sans-body text-gray-800 bg-transparent'
                   placeholder={t.formEmailP}
                 />
               </div>
-              <MagneticButton className='w-full bg-[#CC5833] text-white py-4 rounded-xl font-sans-title font-semibold mt-4 hover:shadow-lg transition-all'>
+              <div>
+                <label className='block font-sans-body text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2'>
+                  {t.formPhoneL}
+                </label>
+                <input
+                  type='tel'
+                  required
+                  pattern='^\+[0-9\s\-]+'
+                  title='El número debe empezar con el prefijo internacional (ej. +34)'
+                  value={formData.phone}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone: e.target.value })
+                  }
+                  className='w-full border-b border-gray-300 py-2 focus:outline-none focus:border-[#2E4036] transition-colors font-sans-body text-gray-800 bg-transparent'
+                  placeholder={t.formPhoneP}
+                />
+              </div>
+              <MagneticButton
+                type='submit'
+                className='w-full bg-[#CC5833] text-white py-4 rounded-xl font-sans-title font-semibold mt-4 hover:shadow-lg transition-all'
+              >
                 {t.formCTA}
               </MagneticButton>
             </form>
@@ -1137,7 +1212,7 @@ const ContactAndFooter = () => {
       <footer className='bg-[#1A1A1A] py-12 px-6'>
         <div className='max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 border-b border-white/10 pb-12 mb-8'>
           <div className='flex items-center gap-4'>
-            <Logo className='w-16 h-16 border border-white/10' />
+            <Logo className='w-16 h-16' />
             <div className='font-sans-title font-bold text-xl tracking-widest uppercase text-white'>
               <span>
                 F. Tobía
