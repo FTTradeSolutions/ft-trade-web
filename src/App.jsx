@@ -440,7 +440,7 @@ const Logo = ({ className = 'w-12 h-12' }) => {
 
   return (
     <img
-      src='Solo Logo.jpg'
+      src='logo.png'
       alt='Fernando Tobía Logo'
       className={`${className} object-contain rounded-full shadow-md`}
       onError={() => setError(true)}
