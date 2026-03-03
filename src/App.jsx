@@ -151,7 +151,7 @@ const translations = {
   },
   fr: {
     navSystem: 'Méthodologie',
-    navManifesto: 'Philosophy',
+    navManifesto: 'Philosophie',
     navArchive: 'Impact',
     navCTA: 'En savoir plus ?',
     heroSubtitle: 'Fernando Tobía Trade & Solutions',
@@ -195,7 +195,7 @@ const translations = {
     arch1Title: 'Nous concevons la mécanique de Vente.',
     arch1Sub: 'Des personnes qui opèrent avec précision.',
     arch2Title: 'Flux Continu',
-    arch2Sub: 'Des résultats qui palpitent, des stratégies qui respirent.',
+    arch2Sub: 'Des résultats qui palpitent, des strategies qui respirent.',
     contactTitle1: 'Commencez votre',
     contactTitle2: 'Transformation.',
     contactDesc: 'Remplissez le formulaire et commençons.',
@@ -228,7 +228,7 @@ const translations = {
     featTitle2A: 'Somos o seu',
     featTitle2B: 'Parceiro Estratégico.',
     featDesc:
-      'Substituímos a intuição por Dados. Desenvolvemos infraestruturas comerciais que operam como maquinaria de precisão para escalar sua empresa internacionalmente.',
+      'Substituímos a intuição por Dados. Desenvolvemos infraestruturas comerciales que operam como maquinaria de precisão para escalar sua empresa internacionalmente.',
     feat1Title: '01. Diagnóstico Comercial.',
     feat1Card1: 'Eficiência',
     feat1Card1V: 'Horas economizadas',
@@ -272,10 +272,10 @@ const translations = {
     formEmailP: 'contato@empresa.com',
     formPhoneL: 'Telefone (com código)',
     formPhoneP: 'Ex. +351 900 000 000',
-    formCTA: 'Solicitar Contato',
+    formCTA: 'Solicitar Contacto',
     footerPrivacy: 'Privacidade',
     footerTerms: 'Termos',
-    footerRights: 'Todos os direitos reservados.',
+    footerRights: 'Todos os derechos reservados.',
     footerSys: 'Sistema Operacional | Ativo'
   },
   it: {
@@ -284,7 +284,7 @@ const translations = {
     navArchive: 'Impatto',
     navCTA: 'Vuoi saperne di più?',
     heroSubtitle: 'Fernando Tobía Trade & Solutions',
-    heroTitle1: "La strategia è l'",
+    heroTitle1: "La estrategia è l'",
     heroTitle2: 'Algoritmo',
     heroCTA: 'Vuoi saperne di più?',
     heroDesc:
@@ -293,7 +293,7 @@ const translations = {
     featTitle2A: 'Siamo il tuo',
     featTitle2B: 'Partner Strategico.',
     featDesc:
-      "Sostituiamo l'intuizione con i Dati. Sviluppiamo infrastrutture commerciali che operano come macchinari di precisione per scalare la tua azienda a livello internazionale.",
+      "Sostituiamo l'intuizione con i Dati. Sviluppiamo infrastrutture commerciali che operano como macchinari di precisione per scalare la tua azienda a livello internazionale.",
     feat1Title: '01. Diagnosi Commerciale.',
     feat1Card1: 'Efficienza',
     feat1Card1V: 'Ore risparmiate',
@@ -324,7 +324,7 @@ const translations = {
     arch1Title: 'Progettiamo la macchina delle Vendite.',
     arch1Sub: 'Persone che operano con precisione.',
     arch2Title: 'Flusso Continuo',
-    arch2Sub: 'Risultati che palpitano, strategie che respirano.',
+    arch2Sub: 'Risultati che palpitano, strategie que respirano.',
     contactTitle1: 'Inizia la tua',
     contactTitle2: 'Trasformazione.',
     contactDesc: 'Compila il modulo e iniziamo.',
@@ -470,6 +470,14 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  const handleScrollTo = (e, targetId) => {
+    e.preventDefault()
+    const target = document.getElementById(targetId)
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <header className='fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4 pointer-events-none'>
       <nav
@@ -495,28 +503,30 @@ const Navbar = () => {
         <div className='hidden md:flex items-center gap-8 font-sans-body text-sm font-semibold'>
           <a
             href='#features'
-            className='hover:text-[#CC5833] transition-colors'
+            onClick={(e) => handleScrollTo(e, 'features')}
+            className='hover:text-[#CC5833] transition-colors cursor-pointer'
           >
             {t.navSystem}
           </a>
           <a
             href='#manifesto'
-            className='hover:text-[#CC5833] transition-colors'
+            onClick={(e) => handleScrollTo(e, 'manifesto')}
+            className='hover:text-[#CC5833] transition-colors cursor-pointer'
           >
             {t.navManifesto}
           </a>
-          <a href='#archive' className='hover:text-[#CC5833] transition-colors'>
+          <a
+            href='#archive'
+            onClick={(e) => handleScrollTo(e, 'archive')}
+            className='hover:text-[#CC5833] transition-colors cursor-pointer'
+          >
             {t.navArchive}
           </a>
         </div>
 
         <div className='flex items-center gap-6'>
           <MagneticButton
-            onClick={() =>
-              document
-                .getElementById('contact')
-                .scrollIntoView({ behavior: 'smooth' })
-            }
+            onClick={(e) => handleScrollTo(e, 'contact')}
             className={`px-5 py-2 rounded-full text-sm font-semibold transition-colors ${scrolled ? 'bg-[#2E4036] text-white' : 'bg-white text-[#1A1A1A]'}`}
           >
             {t.navCTA}
@@ -542,6 +552,18 @@ const Navbar = () => {
 const Hero = () => {
   const heroRef = useRef(null)
   const { t } = useContext(LanguageContext)
+  const [particles, setParticles] = useState([])
+
+  useEffect(() => {
+    const generated = Array.from({ length: 25 }).map(() => ({
+      size: Math.random() * 3 + 1.5,
+      left: Math.random() * 100,
+      duration: Math.random() * 20 + 15,
+      delay: Math.random() * 10,
+      tx: Math.random() * 100 - 50
+    }))
+    setParticles(generated)
+  }, [])
 
   useLayoutEffect(() => {
     if (!window.gsap) return
@@ -562,6 +584,11 @@ const Hero = () => {
     return () => ctx.revert()
   }, [])
 
+  const handleScrollToContact = (e) => {
+    e.preventDefault()
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <section
       ref={heroRef}
@@ -570,11 +597,37 @@ const Hero = () => {
       <img
         src='https://images.unsplash.com/photo-1470115636492-6d2b56f9146d?q=80&w=2070&auto=format&fit=crop'
         alt='Atmósfera forestal premium'
-        className='absolute inset-0 w-full h-full object-cover opacity-60 scale-105 transform-gpu'
+        className='absolute inset-0 w-full h-full object-cover opacity-70 transform-gpu animate-image-breath'
+        style={{ transformOrigin: 'center 40%' }}
       />
-      <div className='absolute inset-0 bg-gradient-to-t from-[#2E4036] via-[#1A1A1A]/50 to-transparent'></div>
 
-      <div className='absolute inset-0 flex flex-col justify-end p-8 md:p-16 lg:p-24 pb-20 max-w-7xl mx-auto w-full'>
+      <div className='absolute -top-[20%] -right-[10%] w-[120%] h-[120%] pointer-events-none mix-blend-screen origin-top-right animate-light-rays'>
+        <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(204,88,51,0.2),transparent_50%)]'></div>
+        <div className='absolute inset-0 bg-[linear-gradient(115deg,transparent_35%,rgba(242,240,233,0.12)_45%,transparent_55%)] blur-2xl'></div>
+        <div className='absolute inset-0 bg-[linear-gradient(100deg,transparent_40%,rgba(242,240,233,0.08)_50%,transparent_60%)] blur-3xl'></div>
+      </div>
+
+      <div className='absolute inset-0 pointer-events-none overflow-hidden mix-blend-screen z-0'>
+        {particles.map((p, i) => (
+          <div
+            key={i}
+            className='absolute bg-[#F2F0E9] rounded-full blur-[1px]'
+            style={{
+              width: `${p.size}px`,
+              height: `${p.size}px`,
+              left: `${p.left}%`,
+              bottom: '-10%',
+              opacity: 0,
+              animation: `floatParticle ${p.duration}s ease-in-out ${p.delay}s infinite`,
+              '--tx': `${p.tx}px`
+            }}
+          />
+        ))}
+      </div>
+
+      <div className='absolute inset-0 bg-gradient-to-t from-[#2E4036] via-[#1A1A1A]/60 to-transparent z-0'></div>
+
+      <div className='absolute inset-0 flex flex-col justify-end p-8 md:p-16 lg:p-24 pb-20 max-w-7xl mx-auto w-full z-10'>
         <div className='max-w-4xl'>
           <p className='hero-text text-white/70 font-mono-data text-xs md:text-sm tracking-[0.2em] uppercase mb-4 md:mb-6 flex items-center gap-3'>
             <span className='w-2 h-2 rounded-full bg-[#CC5833] animate-pulse'></span>
@@ -590,11 +643,7 @@ const Hero = () => {
           </h1>
           <div className='hero-text mt-8 md:mt-12 flex flex-col md:flex-row gap-6 md:items-center'>
             <MagneticButton
-              onClick={() =>
-                document
-                  .getElementById('contact')
-                  .scrollIntoView({ behavior: 'smooth' })
-              }
+              onClick={handleScrollToContact}
               className='bg-[#CC5833] text-white px-8 py-4 rounded-full font-sans-body font-semibold flex items-center w-max'
             >
               {t.heroCTA} <ArrowRight className='w-5 h-5 ml-2' />
@@ -605,6 +654,18 @@ const Hero = () => {
           </div>
         </div>
       </div>
+
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        .animate-image-breath { animation: image-breath 25s ease-in-out infinite alternate; }
+        .animate-light-rays { animation: light-rays 12s ease-in-out infinite alternate; }
+        @keyframes image-breath { 0% { transform: scale(1.02); } 100% { transform: scale(1.10); } }
+        @keyframes light-rays { 0% { transform: rotate(0deg) scale(1); opacity: 0.6; } 100% { transform: rotate(-3deg) scale(1.05); opacity: 0.9; } }
+        @keyframes floatParticle { 0% { transform: translate(0, 0); opacity: 0; } 20% { opacity: 0.6; } 80% { opacity: 0.6; } 100% { transform: translate(var(--tx), -100vh); opacity: 0; } }
+      `
+        }}
+      />
     </section>
   )
 }
@@ -614,7 +675,6 @@ const Hero = () => {
 const FeatureDeck = () => {
   const [activeIndex, setActiveIndex] = useState(0)
   const { t } = useContext(LanguageContext)
-
   const cards = [
     { title: t.feat1Card1, value: t.feat1Card1V, desc: t.feat1Card1D },
     { title: t.feat1Card2, value: t.feat1Card2V, desc: t.feat1Card2D },
@@ -635,7 +695,7 @@ const FeatureDeck = () => {
         return (
           <div
             key={idx}
-            className={`absolute w-full max-w-[320px] bg-white rounded-2xl p-6 shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-gray-100 transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]`}
+            className='absolute w-full max-w-[320px] bg-white rounded-2xl p-6 shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-gray-100 transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]'
             style={{
               transform: `translateY(${offset * 12}px) scale(${1 - offset * 0.05})`,
               zIndex: 10 - offset,
@@ -664,7 +724,6 @@ const FeatureDeck = () => {
 const FeatureTelemetry = () => {
   const { t } = useContext(LanguageContext)
   const phrases = [t.feat2P1, t.feat2P2, t.feat2P3]
-
   const [text, setText] = useState('')
   const [phraseIndex, setPhraseIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -672,7 +731,6 @@ const FeatureTelemetry = () => {
   useEffect(() => {
     const currentPhrase = phrases[phraseIndex] || phrases[0]
     const typeSpeed = isDeleting ? 30 : 80
-
     const timeout = setTimeout(() => {
       if (!isDeleting && text === currentPhrase) {
         setTimeout(() => setIsDeleting(true), 1500)
@@ -683,7 +741,6 @@ const FeatureTelemetry = () => {
         setText(currentPhrase.substring(0, text.length + (isDeleting ? -1 : 1)))
       }
     }, typeSpeed)
-
     return () => clearTimeout(timeout)
   }, [text, isDeleting, phraseIndex, phrases])
 
@@ -695,20 +752,15 @@ const FeatureTelemetry = () => {
           {t.feat2Live}
         </span>
       </div>
-
       <div className='mt-8 flex-grow'>
         <p className='font-mono-data text-white/60 text-xs mb-2'>
           {'>'} {t.feat2Log}
         </p>
         <div className='font-mono-data text-white text-base md:text-lg leading-relaxed h-12'>
           {text}
-          <span
-            className='inline-block w-2 h-4 bg-[#CC5833] ml-1 animate-ping'
-            style={{ animationDuration: '1s' }}
-          ></span>
+          <span className='inline-block w-2 h-4 bg-[#CC5833] ml-1 animate-ping'></span>
         </div>
       </div>
-
       <div className='border-t border-white/10 pt-4 mt-4 flex justify-between items-center text-white/40 font-mono-data text-[10px]'>
         <span>{t.feat2Stream}</span>
         <span>LAT: 12ms</span>
@@ -719,7 +771,6 @@ const FeatureTelemetry = () => {
 
 const FeatureAgenda = () => {
   const { t } = useContext(LanguageContext)
-
   return (
     <div className='h-full w-full relative flex flex-col justify-center min-h-[250px]'>
       <div className='flex justify-between items-center mb-6'>
@@ -728,13 +779,11 @@ const FeatureAgenda = () => {
         </span>
         <Settings className='w-4 h-4 text-white/50' />
       </div>
-
       <div className='grid grid-cols-7 gap-2 mb-6 relative'>
         {t.days.map((day, i) => (
           <div
             key={i}
-            className={`aspect-square rounded-lg flex items-center justify-center font-mono-data text-xs 
-            ${i === 3 ? 'bg-white text-[#2E4036] shadow-lg agenda-target relative' : 'bg-white/10 text-white/50 border border-white/10'}`}
+            className={`aspect-square rounded-lg flex items-center justify-center font-mono-data text-xs ${i === 3 ? 'bg-white text-[#2E4036] shadow-lg relative' : 'bg-white/10 text-white/50 border border-white/10'}`}
           >
             {day}
             {i === 3 && (
@@ -742,36 +791,18 @@ const FeatureAgenda = () => {
             )}
           </div>
         ))}
-
-        {/* Cursor animado com CSS personalizado */}
         <div className='absolute cursor-animation pointer-events-none z-10 flex flex-col items-center'>
           <MousePointer2 className='w-6 h-6 text-white fill-[#1A1A1A]' />
         </div>
       </div>
-
-      <div className='w-full bg-white/10 rounded-full h-8 flex items-center justify-center font-sans-body text-xs text-white font-semibold save-button-target'>
+      <div className='w-full bg-white/10 rounded-full h-8 flex items-center justify-center font-sans-body text-xs text-white font-semibold'>
         {t.feat3Action}
       </div>
-
       <style
         dangerouslySetInnerHTML={{
           __html: `
-        @keyframes autoCursor {
-          0% { transform: translate(150px, 80px); opacity: 0; }
-          10% { opacity: 1; }
-          30% { transform: translate(110px, -20px); scale: 1; }
-          35% { transform: translate(110px, -20px); scale: 0.8; }
-          40% { transform: translate(110px, -20px); scale: 1; }
-          60% { transform: translate(60px, 45px); scale: 1; }
-          65% { transform: translate(60px, 45px); scale: 0.8; }
-          70% { transform: translate(60px, 45px); scale: 1; }
-          90% { transform: translate(-20px, 100px); opacity: 1; }
-          100% { transform: translate(-20px, 100px); opacity: 0; }
-        }
-        .cursor-animation {
-          animation: autoCursor 4s infinite cubic-bezier(0.25, 1, 0.5, 1);
-          transform-origin: top left;
-        }
+        @keyframes autoCursor { 0% { transform: translate(150px, 80px); opacity: 0; } 10% { opacity: 1; } 30% { transform: translate(110px, -20px); scale: 1; } 40% { transform: translate(110px, -20px); scale: 1; } 60% { transform: translate(60px, 45px); scale: 1; } 70% { transform: translate(60px, 45px); scale: 1; } 90% { transform: translate(-20px, 100px); opacity: 1; } 100% { transform: translate(-20px, 100px); opacity: 0; } }
+        .cursor-animation { animation: autoCursor 4s infinite cubic-bezier(0.25, 1, 0.5, 1); transform-origin: top left; }
       `
         }}
       />
@@ -779,24 +810,19 @@ const FeatureAgenda = () => {
   )
 }
 
-// --- IMPLEMENTAÇÃO DO SCROLL VERTICAL COM CARTÕES EMPILHADOS (STACKING) ---
 const Features = () => {
   const { t } = useContext(LanguageContext)
   const containerRef = useRef(null)
-
   useLayoutEffect(() => {
     if (!window.gsap || !window.ScrollTrigger) return
-
     let ctx = window.gsap.context(() => {
       const cards = window.gsap.utils.toArray('.feature-stack-card')
-
       cards.forEach((card, i) => {
-        if (i === cards.length - 1) return // A última carta não precisa encolher
-
+        if (i === cards.length - 1) return
         window.ScrollTrigger.create({
           trigger: cards[i + 1],
-          start: 'top 50%', // Inicia quando a próxima carta já está na metade da tela
-          end: 'top 25%', // Termina quando a próxima carta quase a cobriu
+          start: 'top 50%',
+          end: 'top 25%',
           scrub: true,
           animation: window.gsap.to(card, {
             scale: 0.92,
@@ -807,7 +833,6 @@ const Features = () => {
         })
       })
     }, containerRef)
-
     return () => ctx.revert()
   }, [t])
 
@@ -815,10 +840,17 @@ const Features = () => {
     <section
       id='features'
       ref={containerRef}
-      className='py-24 md:py-32 bg-[#F2F0E9] px-4 md:px-8 relative z-20 rounded-[2rem] md:rounded-[3rem] -mt-10'
+      className='py-24 md:py-32 px-4 md:px-8 relative z-20 rounded-[2rem] md:rounded-[3rem] -mt-10'
     >
-      {/* Título e Descrição da Seção */}
-      <div className='max-w-5xl mx-auto mb-20 text-center'>
+      <div className='absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[2rem] md:rounded-[3rem] bg-[#F2F0E9]'>
+        <img
+          src='https://images.unsplash.com/photo-1560179707-f14e90ef3623?q=80&w=2073&auto=format&fit=crop'
+          alt='Strategy'
+          className='w-full h-full object-cover opacity-[0.12] mix-blend-luminosity'
+        />
+        <div className='absolute inset-0 bg-gradient-to-b from-[#F2F0E9] via-[#F2F0E9]/60 to-transparent h-64'></div>
+      </div>
+      <div className='max-w-5xl mx-auto mb-20 text-center relative z-10'>
         <h2 className='font-sans-title font-bold text-4xl md:text-5xl lg:text-6xl text-[#1A1A1A] mb-6 tracking-tight whitespace-pre-line'>
           {t.featTitle1}
           <br />
@@ -831,44 +863,37 @@ const Features = () => {
           {t.featDesc}
         </p>
       </div>
-
-      {/* Contêiner de Cartões Empilhados */}
-      <div className='max-w-5xl mx-auto relative pb-[15vh]'>
-        {/* CARTÃO 1: DIAGNÓSTICO (Branco) */}
+      <div className='max-w-5xl mx-auto relative pb-[15vh] z-10'>
         <div className='feature-stack-card sticky top-[15vh] w-full bg-white rounded-[2rem] md:rounded-[3rem] shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-gray-100 mb-[5vh] p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 overflow-hidden'>
           <div className='w-full md:w-1/2'>
-            <h3 className='font-sans-title font-bold text-3xl md:text-5xl text-[#1A1A1A] mb-6 tracking-tight leading-tight'>
+            <h3 className='font-sans-title font-bold text-3xl md:text-5xl text-[#1A1A1A] mb-6 tracking-tight'>
               {t.feat1Title}
             </h3>
-            <div className='w-12 h-1 bg-[#CC5833] rounded-full mb-6 md:mb-0'></div>
+            <div className='w-12 h-1 bg-[#CC5833] rounded-full'></div>
           </div>
-          <div className='w-full md:w-1/2 relative h-full min-h-[300px]'>
+          <div className='w-full md:w-1/2 relative min-h-[300px]'>
             <FeatureDeck />
           </div>
         </div>
-
-        {/* CARTÃO 2: RESULTADOS (Carvão) */}
-        <div className='feature-stack-card sticky top-[18vh] w-full bg-[#1A1A1A] rounded-[2rem] md:rounded-[3rem] shadow-[0_15px_50px_rgba(0,0,0,0.3)] border border-white/10 mb-[5vh] p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 overflow-hidden text-white'>
+        <div className='feature-stack-card sticky top-[18vh] w-full bg-[#1A1A1A] rounded-[2rem] md:rounded-[3rem] shadow-[0_15px_50px_rgba(0,0,0,0.3)] border border-white/10 mb-[5vh] p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 text-white overflow-hidden'>
           <div className='w-full md:w-1/2'>
-            <h3 className='font-sans-title font-bold text-3xl md:text-5xl text-white mb-6 tracking-tight leading-tight'>
+            <h3 className='font-sans-title font-bold text-3xl md:text-5xl mb-6 tracking-tight'>
               {t.feat2Title}
             </h3>
-            <div className='w-12 h-1 bg-[#CC5833] rounded-full mb-6 md:mb-0'></div>
+            <div className='w-12 h-1 bg-[#CC5833] rounded-full'></div>
           </div>
-          <div className='w-full md:w-1/2 relative h-full min-h-[300px]'>
+          <div className='w-full md:w-1/2 relative min-h-[300px]'>
             <FeatureTelemetry />
           </div>
         </div>
-
-        {/* CARTÃO 3: DIREÇÃO POR OBJETIVOS (Verde Musgo) */}
-        <div className='feature-stack-card sticky top-[21vh] w-full bg-[#2E4036] rounded-[2rem] md:rounded-[3rem] shadow-[0_20px_60px_rgba(0,0,0,0.4)] border border-white/5 mb-[5vh] p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 overflow-hidden text-white'>
+        <div className='feature-stack-card sticky top-[21vh] w-full bg-[#2E4036] rounded-[2rem] md:rounded-[3rem] shadow-[0_20px_60px_rgba(0,0,0,0.4)] border border-white/5 mb-[5vh] p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 text-white overflow-hidden'>
           <div className='w-full md:w-1/2'>
-            <h3 className='font-sans-title font-bold text-3xl md:text-5xl text-white mb-6 tracking-tight leading-tight'>
+            <h3 className='font-sans-title font-bold text-3xl md:text-5xl mb-6 tracking-tight'>
               {t.feat3Title}
             </h3>
-            <div className='w-12 h-1 bg-[#CC5833] rounded-full mb-6 md:mb-0'></div>
+            <div className='w-12 h-1 bg-[#CC5833] rounded-full'></div>
           </div>
-          <div className='w-full md:w-1/2 relative h-full min-h-[300px]'>
+          <div className='w-full md:w-1/2 relative min-h-[300px]'>
             <FeatureAgenda />
           </div>
         </div>
@@ -880,7 +905,6 @@ const Features = () => {
 const Manifesto = () => {
   const sectionRef = useRef(null)
   const { t } = useContext(LanguageContext)
-
   useLayoutEffect(() => {
     if (!window.gsap || !window.ScrollTrigger) return
     let ctx = window.gsap.context(() => {
@@ -894,13 +918,9 @@ const Manifesto = () => {
           duration: 1,
           stagger: 0.3,
           ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 60%'
-          }
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 60%' }
         }
       )
-
       window.gsap.to('.parallax-bg', {
         yPercent: 30,
         ease: 'none',
@@ -923,11 +943,10 @@ const Manifesto = () => {
     >
       <img
         src='https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2013&auto=format&fit=crop'
-        alt='Textura orgânica'
-        className='parallax-bg absolute inset-0 w-full h-[130%] object-cover opacity-30 object-center origin-top mix-blend-luminosity'
+        alt='Organic'
+        className='parallax-bg absolute inset-0 w-full h-[130%] object-cover opacity-30 mix-blend-luminosity'
       />
       <div className='absolute inset-0 bg-[#1A1A1A]/80'></div>
-
       <div className='relative z-10 max-w-5xl mx-auto px-6 text-center'>
         <p className='manifesto-line font-mono-data text-[#CC5833] text-sm uppercase tracking-[0.3em] mb-12'>
           {t.manifTag}
@@ -952,62 +971,58 @@ const Manifesto = () => {
 }
 
 const ArchivePanel = ({
-  index,
   title,
   subtitle,
   bgColor,
   textColor,
   bgImage,
+  overlayMode = 'dark',
   children
-}) => {
-  const { t } = useContext(LanguageContext)
-  return (
-    <div
-      className={`sticky top-0 h-screen w-full ${bgColor} flex flex-col justify-center px-6 md:px-16 overflow-hidden rounded-t-[2rem] md:rounded-t-[3rem] archive-panel shadow-[0_-20px_50px_rgba(0,0,0,0.2)]`}
-    >
-      {bgImage && (
-        <div className='absolute inset-0 z-0 pointer-events-none'>
-          <img
-            src={bgImage}
-            alt='Fundo premium'
-            className='w-full h-full object-cover opacity-20 mix-blend-luminosity scale-105'
-          />
-          <div className='absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-transparent to-[#1A1A1A]/60'></div>
-        </div>
-      )}
-      <div className='max-w-7xl mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-12 z-10 relative'>
-        <div className='w-full md:w-1/2'>
-          <h2
-            className={`font-sans-title font-bold text-5xl md:text-7xl mb-6 ${textColor} tracking-tight`}
-          >
-            {title}
-          </h2>
-          <p
-            className={`font-serif-italic text-2xl md:text-3xl ${textColor} opacity-80`}
-          >
-            {subtitle}
-          </p>
-        </div>
-        <div className='w-full md:w-1/2 flex justify-center items-center aspect-square relative'>
-          {children}
-        </div>
+}) => (
+  <div
+    className={`sticky top-0 h-screen w-full ${bgColor} flex flex-col justify-center px-6 md:px-16 overflow-hidden rounded-t-[2rem] md:rounded-t-[3rem] archive-panel shadow-[0_-20px_50px_rgba(0,0,0,0.2)]`}
+  >
+    {bgImage && (
+      <div className='absolute inset-0 z-0 pointer-events-none'>
+        <img
+          src={bgImage}
+          alt='Background'
+          className='w-full h-full object-cover opacity-15 mix-blend-luminosity scale-105'
+        />
+        <div
+          className={`absolute inset-0 bg-gradient-to-t ${overlayMode === 'dark' ? 'from-[#1A1A1A] via-transparent to-[#1A1A1A]/60' : 'from-[#F2F0E9] via-transparent to-[#F2F0E9]/80'}`}
+        ></div>
+      </div>
+    )}
+    <div className='max-w-7xl mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-12 z-10 relative'>
+      <div className='w-full md:w-1/2'>
+        <h2
+          className={`font-sans-title font-bold text-5xl md:text-7xl mb-6 ${textColor} tracking-tight`}
+        >
+          {title}
+        </h2>
+        <p
+          className={`font-serif-italic text-2xl md:text-3xl ${textColor} opacity-80`}
+        >
+          {subtitle}
+        </p>
+      </div>
+      <div className='w-full md:w-1/2 flex justify-center items-center aspect-square relative'>
+        {children}
       </div>
     </div>
-  )
-}
+  </div>
+)
 
 const Archive = () => {
   const containerRef = useRef(null)
   const { t } = useContext(LanguageContext)
-
   useLayoutEffect(() => {
     if (!window.gsap || !window.ScrollTrigger) return
     let ctx = window.gsap.context(() => {
       const panels = window.gsap.utils.toArray('.archive-panel')
-
       panels.forEach((panel, i) => {
         if (i === panels.length - 1) return
-
         window.ScrollTrigger.create({
           trigger: panels[i + 1],
           start: 'top bottom',
@@ -1030,13 +1045,13 @@ const Archive = () => {
       ref={containerRef}
       className='relative w-full bg-[#1A1A1A] -mt-10 z-40 pb-[30vh]'
     >
-      {/* CARTÃO 1 */}
       <ArchivePanel
-        index={1}
         title={t.arch1Title}
         subtitle={t.arch1Sub}
         bgColor='bg-[#F2F0E9]'
         textColor='text-[#1A1A1A]'
+        bgImage='https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop'
+        overlayMode='light'
       >
         <div className='relative w-full h-full flex items-center justify-center'>
           <div className='absolute w-64 h-64 border-[1px] border-[#2E4036]/20 rounded-full animate-[spin_10s_linear_infinite]'></div>
@@ -1046,15 +1061,13 @@ const Archive = () => {
           </div>
         </div>
       </ArchivePanel>
-
-      {/* CARTÃO 2 (Fluxo contínuo, substituindo a terceira anterior e removendo index) */}
       <ArchivePanel
-        index={2}
         title={t.arch2Title}
         subtitle={t.arch2Sub}
         bgColor='bg-[#1A1A1A]'
         textColor='text-[#F2F0E9]'
         bgImage='https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop'
+        overlayMode='dark'
       >
         <div className='w-full h-full flex items-center justify-center'>
           <svg viewBox='0 0 1000 200' className='w-full h-32 relative z-10'>
@@ -1070,16 +1083,7 @@ const Archive = () => {
           </svg>
           <style
             dangerouslySetInnerHTML={{
-              __html: `
-            .path-pulse {
-              animation: drawLine 3s linear infinite;
-            }
-            @keyframes drawLine {
-              0% { stroke-dashoffset: 2000; }
-              50% { stroke-dashoffset: 0; }
-              100% { stroke-dashoffset: -2000; }
-            }
-          `
+              __html: `.path-pulse { animation: drawLine 3s linear infinite; } @keyframes drawLine { 0% { stroke-dashoffset: 2000; } 50% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -2000; } }`
             }}
           />
         </div>
@@ -1111,14 +1115,24 @@ const ContactAndFooter = () => {
 
   return (
     <div className='relative z-50 bg-[#1A1A1A] rounded-t-[2rem] md:rounded-t-[3rem] overflow-hidden'>
-      {/* SECCIÓN CONTACTO */}
       <section
         id='contact'
         className='bg-[#2E4036] py-24 md:py-32 px-6 rounded-t-[2rem] md:rounded-t-[3rem]'
       >
         <div className='max-w-4xl mx-auto flex flex-col md:flex-row gap-16 items-center'>
           <div className='w-full md:w-1/2 text-white'>
-            <Logo className='w-32 h-32 md:w-48 md:h-48 mb-8' />
+            <div className='mb-8'>
+              <Logo className='w-40 h-40 md:w-56 md:h-56 mb-6' />
+              <div className='font-sans-title font-bold text-xl md:text-2xl tracking-widest uppercase text-white'>
+                <span>
+                  Fernando Tobía
+                  <br />
+                  <span className='text-xs md:text-sm text-white/60 block font-normal tracking-normal mt-1'>
+                    TRADE & SOLUTIONS
+                  </span>
+                </span>
+              </div>
+            </div>
             <h2 className='font-sans-title font-bold text-4xl md:text-6xl mb-6'>
               {t.contactTitle1}
               <br />
@@ -1132,11 +1146,10 @@ const ContactAndFooter = () => {
               {t.contactTag}
             </div>
           </div>
-
           <div className='w-full md:w-1/2 bg-white rounded-3xl p-8 shadow-2xl'>
             <form className='flex flex-col gap-6' onSubmit={handleSubmit}>
               <div>
-                <label className='block font-sans-body text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2'>
+                <label className='block font-sans-body text-xs font-semibold text-gray-500 uppercase mb-2'>
                   {t.formNameL}
                 </label>
                 <input
@@ -1146,12 +1159,12 @@ const ContactAndFooter = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
-                  className='w-full border-b border-gray-300 py-2 focus:outline-none focus:border-[#2E4036] transition-colors font-sans-body text-gray-800 bg-transparent'
+                  className='w-full border-b border-gray-300 py-2 focus:outline-none focus:border-[#2E4036] font-sans-body text-gray-800 bg-transparent'
                   placeholder={t.formNameP}
                 />
               </div>
               <div>
-                <label className='block font-sans-body text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2'>
+                <label className='block font-sans-body text-xs font-semibold text-gray-500 uppercase mb-2'>
                   {t.formCompL}
                 </label>
                 <input
@@ -1161,12 +1174,12 @@ const ContactAndFooter = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, company: e.target.value })
                   }
-                  className='w-full border-b border-gray-300 py-2 focus:outline-none focus:border-[#2E4036] transition-colors font-sans-body text-gray-800 bg-transparent'
+                  className='w-full border-b border-gray-300 py-2 focus:outline-none focus:border-[#2E4036] font-sans-body text-gray-800 bg-transparent'
                   placeholder={t.formCompP}
                 />
               </div>
               <div>
-                <label className='block font-sans-body text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2'>
+                <label className='block font-sans-body text-xs font-semibold text-gray-500 uppercase mb-2'>
                   {t.formEmailL}
                 </label>
                 <input
@@ -1176,30 +1189,29 @@ const ContactAndFooter = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  className='w-full border-b border-gray-300 py-2 focus:outline-none focus:border-[#2E4036] transition-colors font-sans-body text-gray-800 bg-transparent'
+                  className='w-full border-b border-gray-300 py-2 focus:outline-none focus:border-[#2E4036] font-sans-body text-gray-800 bg-transparent'
                   placeholder={t.formEmailP}
                 />
               </div>
               <div>
-                <label className='block font-sans-body text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2'>
+                <label className='block font-sans-body text-xs font-semibold text-gray-500 uppercase mb-2'>
                   {t.formPhoneL}
                 </label>
                 <input
                   type='tel'
                   required
                   pattern='^\+[0-9\s\-]+'
-                  title='El número debe empezar con el prefijo internacional (ej. +34)'
                   value={formData.phone}
                   onChange={(e) =>
                     setFormData({ ...formData, phone: e.target.value })
                   }
-                  className='w-full border-b border-gray-300 py-2 focus:outline-none focus:border-[#2E4036] transition-colors font-sans-body text-gray-800 bg-transparent'
+                  className='w-full border-b border-gray-300 py-2 focus:outline-none focus:border-[#2E4036] font-sans-body text-gray-800 bg-transparent'
                   placeholder={t.formPhoneP}
                 />
               </div>
               <MagneticButton
                 type='submit'
-                className='w-full bg-[#CC5833] text-white py-4 rounded-xl font-sans-title font-semibold mt-4 hover:shadow-lg transition-all'
+                className='w-full bg-[#CC5833] text-white py-4 rounded-xl font-sans-title font-semibold mt-4'
               >
                 {t.formCTA}
               </MagneticButton>
@@ -1207,8 +1219,6 @@ const ContactAndFooter = () => {
           </div>
         </div>
       </section>
-
-      {/* RODAPÉ */}
       <footer className='bg-[#1A1A1A] py-12 px-6'>
         <div className='max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 border-b border-white/10 pb-12 mb-8'>
           <div className='flex items-center gap-4'>
@@ -1217,13 +1227,12 @@ const ContactAndFooter = () => {
               <span>
                 F. Tobía
                 <br />
-                <span className='text-xs text-white/40 block font-normal tracking-normal'>
+                <span className='text-xs text-white/40 block font-normal mt-1'>
                   TRADE & SOLUTIONS
                 </span>
               </span>
             </div>
           </div>
-
           <div className='flex gap-8 font-sans-body text-sm text-white/60'>
             <a href='#' className='hover:text-white transition-colors'>
               LinkedIn
@@ -1236,7 +1245,6 @@ const ContactAndFooter = () => {
             </a>
           </div>
         </div>
-
         <div className='max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono-data text-white/40'>
           <p>
             © {new Date().getFullYear()} Fernando Tobía Trade & Solutions.{' '}
@@ -1255,12 +1263,9 @@ const ContactAndFooter = () => {
   )
 }
 
-// --- APP PRINCIPAL ---
-
 export default function App() {
   const [gsapLoaded, setGsapLoaded] = useState(false)
-  const [lang, setLang] = useState('es') // Idioma padrão
-
+  const [lang, setLang] = useState('es')
   useEffect(() => {
     const loadScript = (src) =>
       new Promise((resolve) => {
@@ -1269,12 +1274,9 @@ export default function App() {
         script.onload = resolve
         document.head.appendChild(script)
       })
-
-    Promise.all([
-      loadScript(
-        'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js'
-      )
-    ]).then(() => {
+    loadScript(
+      'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js'
+    ).then(() => {
       loadScript(
         'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js'
       ).then(() => {
@@ -1285,54 +1287,29 @@ export default function App() {
       })
     })
   }, [])
-
-  if (!gsapLoaded) {
+  if (!gsapLoaded)
     return (
       <div className='min-h-screen bg-[#1A1A1A] flex items-center justify-center font-sans-title text-[#F2F0E9] text-sm tracking-[0.2em] uppercase'>
         Inicializando Sistema...
       </div>
     )
-  }
-
-  // Obtemos as traduções ativas
   const t = translations[lang]
-
   return (
     <LanguageContext.Provider value={{ lang, setLang, t }}>
       <div className='relative min-h-screen bg-[#F2F0E9] text-[#1A1A1A] selection:bg-[#2E4036] selection:text-white smooth-scroll'>
-        {/* Fontes importadas */}
         <style
           dangerouslySetInnerHTML={{
-            __html: `
-          @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
-          
-          .font-sans-title { font-family: 'Plus Jakarta Sans', sans-serif; }
-          .font-sans-body { font-family: 'Outfit', sans-serif; }
-          .font-serif-italic { font-family: 'Cormorant Garamond', serif; font-style: italic; }
-          .font-mono-data { font-family: 'JetBrains Mono', monospace; }
-          
-          body { margin: 0; background-color: #1A1A1A; }
-          html { scroll-behavior: smooth; }
-          
-          /* Ocultar barra de rolagem para uma estética mais limpa */
-          ::-webkit-scrollbar { width: 8px; }
-          ::-webkit-scrollbar-track { background: #1A1A1A; }
-          ::-webkit-scrollbar-thumb { background: #2E4036; border-radius: 4px; }
-          ::-webkit-scrollbar-thumb:hover { background: #CC5833; }
-        `
+            __html: `@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap'); .font-sans-title { font-family: 'Plus Jakarta Sans', sans-serif; } .font-sans-body { font-family: 'Outfit', sans-serif; } .font-serif-italic { font-family: 'Cormorant Garamond', serif; font-style: italic; } .font-mono-data { font-family: 'JetBrains Mono', monospace; } body { margin: 0; background-color: #1A1A1A; } html { scroll-behavior: smooth; } ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: #1A1A1A; } ::-webkit-scrollbar-thumb { background: #2E4036; border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: #CC5833; }`
           }}
         />
-
         <NoiseOverlay />
         <Navbar />
-
         <main className='relative flex flex-col'>
           <Hero />
           <Features />
           <Manifesto />
           <Archive />
         </main>
-
         <ContactAndFooter />
       </div>
     </LanguageContext.Provider>
