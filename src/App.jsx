@@ -151,7 +151,7 @@ const translations = {
   },
   fr: {
     navSystem: 'Méthodologie',
-    navManifesto: 'Philosophie',
+    navManifesto: 'Philosophy',
     navArchive: 'Impact',
     navCTA: 'En savoir plus ?',
     heroSubtitle: 'Fernando Tobía Trade & Solutions',
@@ -195,7 +195,7 @@ const translations = {
     arch1Title: 'Nous concevons la mécanique de Vente.',
     arch1Sub: 'Des personnes qui opèrent avec précision.',
     arch2Title: 'Flux Continu',
-    arch2Sub: 'Des résultats qui palpitent, des strategies qui respirent.',
+    arch2Sub: 'Des résultats qui palpitent, des estrategias qui respirent.',
     contactTitle1: 'Commencez votre',
     contactTitle2: 'Transformation.',
     contactDesc: 'Remplissez le formulaire et commençons.',
@@ -276,7 +276,7 @@ const translations = {
     footerPrivacy: 'Privacidade',
     footerTerms: 'Termos',
     footerRights: 'Todos os derechos reservados.',
-    footerSys: 'Sistema Operacional | Ativo'
+    footerSys: 'Sistema Operacional | Activo'
   },
   it: {
     navSystem: 'Metodologia',
@@ -322,7 +322,7 @@ const translations = {
     manifL4: '"Dov\'è il tuo massimo potenziale?"',
     arch1Tag: 'Archivio',
     arch1Title: 'Progettiamo la macchina delle Vendite.',
-    arch1Sub: 'Persone che operano con precisione.',
+    arch1Sub: 'Persone que operano con precisione.',
     arch2Title: 'Flusso Continuo',
     arch2Sub: 'Risultati che palpitano, strategie que respirano.',
     contactTitle1: 'Inizia la tua',
@@ -1234,7 +1234,12 @@ const ContactAndFooter = () => {
             </div>
           </div>
           <div className='flex gap-8 font-sans-body text-sm text-white/60'>
-            <a href='#' className='hover:text-white transition-colors'>
+            <a
+              href='https://www.linkedin.com/in/fernandotobia/'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='hover:text-white transition-colors'
+            >
               LinkedIn
             </a>
             <a href='#' className='hover:text-white transition-colors'>
@@ -1266,7 +1271,11 @@ const ContactAndFooter = () => {
 export default function App() {
   const [gsapLoaded, setGsapLoaded] = useState(false)
   const [lang, setLang] = useState('es')
+
   useEffect(() => {
+    // CAMBIO DE TÍTULO DE LA PESTAÑA
+    document.title = 'Fernando Tobía T&S'
+
     const loadScript = (src) =>
       new Promise((resolve) => {
         const script = document.createElement('script')
@@ -1287,6 +1296,7 @@ export default function App() {
       })
     })
   }, [])
+
   if (!gsapLoaded)
     return (
       <div className='min-h-screen bg-[#1A1A1A] flex items-center justify-center font-sans-title text-[#F2F0E9] text-sm tracking-[0.2em] uppercase'>
